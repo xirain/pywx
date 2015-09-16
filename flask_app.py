@@ -49,13 +49,13 @@ def getFanyi(word):
         resp = urllib2.urlopen(req)
         jsonData = json.loads(resp.read())
 
-        # print json.dumps(jsonData,indent=2)
+        print json.dumps(jsonData,indent=2)
         errorCode = jsonData['errorCode']
         if 0 == errorCode:
             if 'basic' in jsonData.keys():
                 trans = u'\n{}的翻译：{}.\n 网络解释：{}\n'.format(jsonData['query'], ';'.join(jsonData['basic']['explains']), ';'.join(jsonData['web'][0]['value']))
             else:
-                trans = u'\n{}的翻译：{}.\n 网络解释：{}\n'.format(jsonData['query'], ';'.join(jsonData['translation']), ';'.join(jsonData['web'][0]['value']))
+                trans = u'\n{}的翻译：{}.\n 网络解释：{}\n'.format(jsonData['query'], ';'.join(jsonData['translation']))
         else:
             trans = u'翻译出错，错误码 {}'.format(errorCode)
     except Exception, e:
