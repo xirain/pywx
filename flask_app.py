@@ -31,7 +31,7 @@ def weixin_verify():
         return 'access verification fail' #fail
 
 def getFanyi(word):
-    word = urllib2.quote(word)
+    # word = urllib2.quote(word)
     # apiuri = 'http://fanyi.youdao.com/openapi.do?keyfrom=flaskr&key=1272049953&type=data&doctype=json&version=1.1&q={}'.format(word)
     handler=urllib2.HTTPHandler(debuglevel=1)
     opener = urllib2.build_opener(handler)
@@ -52,7 +52,10 @@ def getFanyi(word):
         # print json.dumps(jsonData,indent=2)
         errorCode = jsonData['errorCode']
         if 0 == errorCode:
-            trans = u'\n{}的翻译：{}.\n 网络解释：{}\n'.format(jsonData['query'], ';'.join(jsonData['basic']['explains']), ';'.join(jsonData['web'][0]['value']))
+            if 'basic' in jsonData.keys():
+                trans = u'\n{}的翻译：{}.\n 网络解释：{}\n'.format(jsonData['query'], ';'.join(jsonData['basic']['explains']), ';'.join(jsonData['web'][0]['value']))
+            else:
+                trans = u'\n{}的翻译：{}.\n 网络解释：{}\n'.format(jsonData['query'], ';'.join(jsonData['translation']), ';'.join(jsonData['web'][0]['value']))
         else:
             trans = u'翻译出错，错误码 {}'.format(errorCode)
     except Exception, e:
